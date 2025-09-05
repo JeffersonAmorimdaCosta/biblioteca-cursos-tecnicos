@@ -1,10 +1,10 @@
 from http import HTTPStatus
 
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI
 
 app = FastAPI()
 
 
-@app.post('/files/uploads', status_code=HTTPStatus.CREATED)
-async def upload_files(files: UploadFile):
-    return True
+@app.get('/', status_code=HTTPStatus.OK)
+async def hello():
+    return {'message': 'Hello World!'}
