@@ -280,3 +280,6 @@ $RECYCLE.BIN/
 # virtual environment
 venv/
 .env/
+
+# database
+*.db
