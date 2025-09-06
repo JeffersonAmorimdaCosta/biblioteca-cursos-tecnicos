@@ -1,6 +1,7 @@
 import logging, requests
 from bs4 import BeautifulSoup
 import colorlog
+from ..database.models import Curso, Disciplina, Livro, MapCursoDisciplina
 
 BASE_URL = 'https://estudante.ifpb.edu.br'
 CURSOS_URL = f'{BASE_URL}/cursos/'
