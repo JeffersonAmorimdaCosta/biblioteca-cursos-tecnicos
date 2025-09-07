@@ -1,10 +1,11 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, ForeignKey, Integer, String
+
 from . import Model
+
 
 class Livro(Model):
     __tablename__ = 'livros'
-    
+
     id = Column(Integer, primary_key=True)
     titulo = Column(String(200), nullable=False)
     link = Column(String(200), nullable=False)
@@ -24,7 +25,7 @@ class Livro(Model):
     def get_by_disciplina(cls, session, disciplina_id):
         """Retorna livros de uma disciplina específica."""
         return session.query(cls).filter(cls.disciplina_id == disciplina_id).all()
-    
+
     @classmethod
     def create(cls, session, titulo, link, disciplina_id):
         """Cria um novo livro."""

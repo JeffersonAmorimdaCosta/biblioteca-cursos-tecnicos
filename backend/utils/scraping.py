@@ -1,20 +1,23 @@
-from . import (requests,
-               BeautifulSoup,
-               get_logger,
-               BASE_URL,
-               CURSOS_URL,
-               CURSOS,
-               Curso,
-               Disciplina,
-               MapCursoDisciplina)
-
+from . import (
+    BASE_URL,
+    CURSOS,
+    CURSOS_URL,
+    BeautifulSoup,
+    Curso,
+    Disciplina,
+    MapCursoDisciplina,
+    get_logger,
+    requests,
+)
 from .database import DataBase
 
 logger = get_logger("Scraping")
 
+
 def main():
     disciplinas_por_curso = scrape_cursos()
     save_data(disciplinas_por_curso)
+
 
 def save_data(data) -> None:
     """
@@ -41,7 +44,7 @@ def save_data(data) -> None:
                         ementa=link,
                         serie=0
                     )
-                    
+
                     if not MapCursoDisciplina.get_by_curso_disciplina(db.session, curso_obj.id, disc_obj.id):
                         MapCursoDisciplina.create(db.session, curso_obj.id, disc_obj.id)
                     disciplinas_obj.add(disc_obj.nome)
@@ -53,9 +56,10 @@ def save_data(data) -> None:
             db.session.rollback()
             logger.error(f"Erro ao salvar dados: {e}")
             raise
-        
+
     logger.info(f"Total de cursos salvos: {len(cursos_obj)}")
     logger.info(f"Total de disciplinas salvas: {len(disciplinas_obj)}")
+
 
 def scrape_cursos():
     """
@@ -73,10 +77,11 @@ def scrape_cursos():
 
         disciplinas = extrair_disciplinas(pagina)
         logger.info(f"Disciplinas encontradas: {len(disciplinas)}")
-        
+
         disciplinas_cursos[curso] = disciplinas
 
     return disciplinas_cursos
+
 
 def fazer_requisicao_get(url: str) -> str:
     """
@@ -94,6 +99,7 @@ def fazer_requisicao_get(url: str) -> str:
         return pag.text
     except requests.exceptions.RequestException as e:
         raise RuntimeError(f'Ocorreu um erro na requisição: {e}') from e
+
 
 def extrair_disciplinas(pagina: str) -> set[dict]:
     """
@@ -113,13 +119,14 @@ def extrair_disciplinas(pagina: str) -> set[dict]:
     for disciplina in links_disciplinas:
         nome = disciplina.get_text(strip=True)
         link = disciplina.get('href')
-        
+
         if link and link.startswith('/'):
             link = BASE_URL + link
 
         disciplinas.add((nome, link))
 
     return disciplinas
+
 
 if __name__ == '__main__':
     main()

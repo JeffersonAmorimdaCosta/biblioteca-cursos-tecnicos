@@ -1,10 +1,11 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+
 from . import Model
+
 
 class Curso(Model):
     __tablename__ = 'cursos'
-    
+
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
 
@@ -35,11 +36,9 @@ class Curso(Model):
 
     def __repr__(self):
         return f'<Curso {self.nome}>'
-    
+
     def to_dict(self):
         return {
             'id': self.id,
             'nome': self.nome
         }
-    
-    
