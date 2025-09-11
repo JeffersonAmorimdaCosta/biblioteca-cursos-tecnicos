@@ -1,10 +1,12 @@
-from sqlalchemy import Column, Integer, String, Boolean
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Boolean, Column, Integer, String
+
 from . import Model
+from .map_curso_disciplina import MapCursoDisciplina
+
 
 class Disciplina(Model):
     __tablename__ = 'disciplinas'
-    
+
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     tec = Column(Boolean, nullable=False)
@@ -25,19 +27,19 @@ class Disciplina(Model):
     @classmethod
     def get_by_curso(cls, session, curso_id):
         """Retorna disciplinas de um curso específico."""
-        from .map_curso_disciplina import MapCursoDisciplina
         return (session.query(cls)
                 .join(MapCursoDisciplina, cls.id == MapCursoDisciplina.disciplina_id)
                 .filter(MapCursoDisciplina.curso_id == curso_id)
                 .all())
-    
+
     @classmethod
     def create(cls, session, nome, tec, ementa, serie):
         """Cria uma nova disciplina."""
-        disci_exists = session.query(cls).filter(cls.nome == nome, cls.serie == serie).first()
+        disci_exists = session.query(cls).filter(
+            cls.nome == nome, cls.serie == serie).first()
         if disci_exists:
             return disci_exists
-        
+
         disciplina = cls(nome=nome, tec=tec, ementa=ementa, serie=serie)
         session.add(disciplina)
         session.flush()
@@ -61,7 +63,7 @@ class Disciplina(Model):
 
     def __repr__(self):
         return f'<Disciplina {self.nome}>'
-    
+
     def to_dict(self):
         return {
             'id': self.id,

@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 from ..database.models import Model
 from . import get_logger
+
 
 class DataBase:
     def __init__(self):
@@ -27,6 +29,7 @@ class DataBase:
         """Fecha a sessão do banco de dados."""
         self.session.close()
         self.logger.info('Database session closed')
+
 
 if __name__ == '__main__':
     # Testando a conexão com o banco de dados

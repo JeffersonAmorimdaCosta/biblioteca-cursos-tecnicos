@@ -1,7 +1,13 @@
-import logging, requests
-from bs4 import BeautifulSoup
+import logging
+
 import colorlog
-from ..database.models import Curso, Disciplina, Livro, MapCursoDisciplina
+import requests
+from bs4 import BeautifulSoup
+
+from ..database.models import Curso as Curso
+from ..database.models import Disciplina as Disciplina
+from ..database.models import Livro as Livro
+from ..database.models import MapCursoDisciplina as MapCursoDisciplina
 
 BASE_URL = 'https://estudante.ifpb.edu.br'
 CURSOS_URL = f'{BASE_URL}/cursos/'
@@ -12,6 +18,7 @@ CURSOS = {
     88: 'Petróleo e Gás',
     154: 'Química'
 }
+
 
 def get_logger(name: str) -> logging.Logger:
     """
