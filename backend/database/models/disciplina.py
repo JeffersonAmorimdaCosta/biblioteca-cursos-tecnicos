@@ -9,6 +9,7 @@ class Disciplina(Model):
     nome = Column(String(100), nullable=False)
     tec = Column(Boolean, nullable=False)
     ementa = Column(String(200), nullable=False)
+    bibliografia = Column(String(500), nullable=True)
     serie = Column(Integer, nullable=False)
 
     @classmethod
@@ -42,17 +43,16 @@ class Disciplina(Model):
         session.flush()
         return disciplina
 
-    def update(self, session, nome=None, tec=None, ementa=None, serie=None):
+    @classmethod
+    def update(cls, session,id, **kwargs):
         """Atualiza uma disciplina."""
-        if nome is not None:
-            self.nome = nome
-        if tec is not None:
-            self.tec = tec
-        if ementa is not None:
-            self.ementa = ementa
-        if serie is not None:
-            self.serie = serie
-        return self
+        disciplina = cls.get_by_id(session, id)
+        if not disciplina:
+            return None
+        for key, value in kwargs.items():
+            setattr(disciplina, key, value)
+        session.add(disciplina)
+        return disciplina
 
     def delete(self, session):
         """Deleta uma disciplina."""

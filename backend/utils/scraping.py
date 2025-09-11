@@ -12,7 +12,7 @@ from .database import DataBase
 
 logger = get_logger("Scraping")
 
-def main():
+def scraping_main():
     disciplinas_por_curso = scrape_cursos()
     save_data(disciplinas_por_curso)
 
@@ -122,4 +122,4 @@ def extrair_disciplinas(pagina: str) -> set[dict]:
     return disciplinas
 
 if __name__ == '__main__':
-    main()
+    scraping_main()
